@@ -8,7 +8,7 @@ public class Main {
             @Override
             public void run() {
                 View view = new View();
-                Model model = new Model(1000, 1);
+                Model model = new Model(1000, 10);
                 Controller c = new Controller(model, view);
             }
         });
