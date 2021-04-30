@@ -20,12 +20,12 @@ public class AutoClickerBot extends SwingWorker<Void, Void> {
     protected Void doInBackground() {
         Random random = new Random();
         model.setRunning();
-        System.out.println("Set called Running = " + model.isRunning());
+//        System.out.println("Set called Running = " + model.isRunning());
         for (long count = 0; count < model.getMaxClicks(); ++count) {
-            System.out.println(count);
+//            System.out.println(count);
             try {
                 robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
-//            robot.delay(model.getDelayBetweenClicks());
+                robot.delay(model.getDelayBetweenClicks());
                 robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
 
                 Thread.sleep(10 + random.nextInt(11));
