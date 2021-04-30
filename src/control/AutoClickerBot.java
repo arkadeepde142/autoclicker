@@ -19,11 +19,14 @@ public class AutoClickerBot extends SwingWorker<Void, Void> {
     @Override
     protected Void doInBackground() {
         Random random = new Random();
+        Point p = MouseInfo.getPointerInfo().getLocation();
         model.setRunning();
-//        System.out.println("Set called Running = " + model.isRunning());
+        System.out.println("Set called Running = " + model.isRunning());
         for (long count = 0; count < model.getMaxClicks(); ++count) {
-//            System.out.println(count);
+            System.out.println(count);
             try {
+                if (MouseInfo.getPointerInfo().getLocation() != p)
+                    robot.mouseMove(p.x, p.y);
                 robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
                 robot.delay(model.getDelayBetweenClicks());
                 robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);

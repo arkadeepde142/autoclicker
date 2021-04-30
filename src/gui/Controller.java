@@ -68,6 +68,7 @@ class Controller {
                 }
 
                 else if (nativeKeyEvent.getKeyCode() == NativeKeyEvent.VC_K) {
+                    System.out.println("K");
                     System.exit(0);
                 }
             }
