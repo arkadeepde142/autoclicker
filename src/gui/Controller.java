@@ -47,7 +47,10 @@ class Controller {
 
             @Override
             public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-                if (nativeKeyEvent.getKeyCode() == model.getStartKey() && !model.getRunning()) {
+                int startKey = model.getStartKey();
+                int stopKey = model.getStopKey();
+                if (nativeKeyEvent.getKeyCode() == startKey && !model.isRunning()) {
+                    System.out.println("W");
                     try {
                         bot = new AutoClickerBot(model);
                         System.out.printf("Started with max_clicks = %d delay = %d ms\n", model.getMaxClicks(), model.getDelayBetweenClicks());
@@ -56,10 +59,16 @@ class Controller {
                     } catch (AWTException e) {
                         e.printStackTrace();
                     }
-                } else if (nativeKeyEvent.getKeyCode() == model.getStopKey() && model.getRunning()) {
+                } else if (nativeKeyEvent.getKeyCode() == stopKey && model.isRunning()) {
+                    System.out.println("S");
                     if (bot != null) {
-                        bot.cancel(false);
+                        bot.cancel(true);
+                        bot = null;
                     }
+                }
+
+                else if (nativeKeyEvent.getKeyCode() == NativeKeyEvent.VC_K) {
+                    System.exit(0);
                 }
             }
 

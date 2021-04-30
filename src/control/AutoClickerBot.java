@@ -5,6 +5,7 @@ import gui.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class AutoClickerBot extends SwingWorker<Void, Void> {
     private Model model;
@@ -16,26 +17,34 @@ public class AutoClickerBot extends SwingWorker<Void, Void> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
-        model.toggleRunning();
-        for(long count = 0; count < model.getMaxClicks(); ++count) {
+    protected Void doInBackground() {
+        Random random = new Random();
+        model.setRunning();
+        System.out.println("Set called Running = " + model.isRunning());
+        for (long count = 0; count < model.getMaxClicks(); ++count) {
             System.out.println(count);
-            robot.delay(model.getDelayBetweenClicks());
-            robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
-            robot.delay(Math.min(model.getDelayBetweenClicks(), 10));
-            robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-            if(isCancelled()) {
-//                model.toggleRunning();
+            try {
+                robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+//            robot.delay(model.getDelayBetweenClicks());
+                robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+
+                Thread.sleep(10 + random.nextInt(11));
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            if (isCancelled()) {
                 System.out.println("Cancelled successfully");
                 break;
             }
         }
-        model.toggleRunning();
         return null;
     }
 
     @Override
     protected void done() {
-        System.out.println("Normally exited");
+        model.unsetRunning();
+        System.out.println("Unset called Running = " + model.isRunning());
+        System.out.println("Done");
     }
 }

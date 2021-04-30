@@ -2,12 +2,14 @@ package gui;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Model {
     private long maxClicks;
     private int delayBetweenClicks;
     private int startKey = NativeKeyEvent.VC_W;
     private int stopKey = NativeKeyEvent.VC_S;
-    private boolean running = false;
+    private AtomicBoolean running = new AtomicBoolean(false);
 
     public Model(long maxClicks, int delayBetweenClicks) {
         this.maxClicks = maxClicks;
@@ -38,18 +40,18 @@ public class Model {
     }
 
     public void setDelayBetweenClicks(int delayBetweenClicks) {
-        if (delayBetweenClicks > 0)
-            this.delayBetweenClicks = delayBetweenClicks;
-        else
-            this.delayBetweenClicks = 0;
+        this.delayBetweenClicks = Math.max(delayBetweenClicks, 0);
     }
 
-    public boolean getRunning() {
-        return running;
+    public boolean isRunning() {
+        return running.get();
     }
 
-    public void toggleRunning() {
-        System.out.println("Running = " + !running);
-        running = !running;
+    public void unsetRunning() {
+        running.compareAndSet(true, false);
+    }
+
+    public void setRunning() {
+        running.compareAndSet(false, true);
     }
 }
